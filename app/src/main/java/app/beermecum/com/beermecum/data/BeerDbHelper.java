@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class BeerDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     static final String DATABASE_NAME = "beermecum.db";
 
     public BeerDbHelper(Context context) {
@@ -23,8 +23,8 @@ public class BeerDbHelper extends SQLiteOpenHelper {
                 BeerContract.BreweriesEntry._ID + " INTEGER PRIMARY KEY," +
                 BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID + " INTEGER NOT NULL, " +
                 BeerContract.BreweriesEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                BeerContract.BreweriesEntry.COLUMN_URL + " TEXT NOT NULL, "+
-                "UNIQUE (" + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID+ ") ON CONFLICT REPLACE);";
+                BeerContract.BreweriesEntry.COLUMN_URL + " TEXT NOT NULL, " +
+                "UNIQUE (" + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID + ") ON CONFLICT REPLACE);";
 
         final String SQL_CREATE_BEER_TABLE = "CREATE TABLE " + BeerContract.BeerEntry.TABLE_NAME + " (" +
                 BeerContract.BeerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +

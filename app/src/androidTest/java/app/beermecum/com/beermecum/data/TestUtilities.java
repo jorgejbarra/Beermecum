@@ -16,7 +16,7 @@ import java.util.Set;
 import app.beermecum.com.beermecum.utils.PollingCheck;
 
 public class TestUtilities extends AndroidTestCase {
-    static final int  TEST_BREWERIES_ID = 99705;
+    static final int TEST_BREWERIES_ID = 10;
     static final int TEST_BEER_ID = 5;
 
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
@@ -42,8 +42,8 @@ public class TestUtilities extends AndroidTestCase {
         ContentValues beerValues = new ContentValues();
         beerValues.put(BeerContract.BeerEntry.COLUMN_BREWERIES_KEY, breweriesRowId);
         beerValues.put(BeerContract.BeerEntry.COLUMN_BEER_ID, TEST_BEER_ID);
-        beerValues.put(BeerContract.BeerEntry.COLUMN_NAME, "Asteroids");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_DESCRIPTION, "Asteroids Descriptions");
+        beerValues.put(BeerContract.BeerEntry.COLUMN_NAME, "Tercio");
+        beerValues.put(BeerContract.BeerEntry.COLUMN_DESCRIPTION, "Tercio de toda la vida");
         beerValues.put(BeerContract.BeerEntry.COLUMN_ABV, 1.2);
         return beerValues;
     }

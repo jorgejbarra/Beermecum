@@ -8,7 +8,7 @@ public class TestUriMatcher extends AndroidTestCase {
     private static final int TEST_BREWERIES_ID = 10;
 
     private static final Uri TEST_BEER_DIR = BeerContract.BeerEntry.CONTENT_URI;
-    private static final Uri TEST_BEER_BY_ID = BeerContract.BeerEntry.buildBeerBreweries(Integer.toString(TEST_BREWERIES_ID));
+    private static final Uri TEST_BEER_BY_ID = BeerContract.BeerEntry.buildBeerById(Integer.toString(TEST_BREWERIES_ID));
     private static final Uri TEST_WEATHER_WITH_BREWERIES_DIR = BeerContract.BeerEntry.buildBeerBreweries(Integer.toString(TEST_BREWERIES_ID));
     private static final Uri TEST_BREWERIES_DIR = BeerContract.BreweriesEntry.CONTENT_URI;
 

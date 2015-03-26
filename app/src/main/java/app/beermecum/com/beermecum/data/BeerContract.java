@@ -32,7 +32,6 @@ public class BeerContract {
 
     public static final String PATH_BEER = "beer";
     public static final String PATH_BREWERIES = "breweries";
-    public static final String PATH_BEER_BREWERIES = PATH_BEER + "/" + PATH_BREWERIES;
 
     /* Inner class that defines the table contents of the breweries table */
     public static final class BreweriesEntry implements BaseColumns {
@@ -47,7 +46,7 @@ public class BeerContract {
 
         public static final String TABLE_NAME = "breweries";
         public static final String COLUMN_BREWERIES_ID = "breweries_id";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "breweries_name";
         public static final String COLUMN_URL = "url";
 
         public static Uri buildBreweriesUri(long id) {
@@ -71,8 +70,8 @@ public class BeerContract {
 
         public static final String TABLE_NAME = "beer";
         public static final String COLUMN_BEER_ID = "beer_id";
-        public static final String COLUMN_BREWERIES_KEY = "breweries_id";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_BREWERIES_KEY = "breweries";
+        public static final String COLUMN_NAME = "beer_name";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_ABV = "abv";
 
@@ -85,7 +84,7 @@ public class BeerContract {
         }
 
         public static Uri buildBeerBreweries(String breweriesId) {
-            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_BEER_BREWERIES).appendPath(breweriesId).build();
+            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_BEER).appendPath(PATH_BREWERIES).appendPath(breweriesId).build();
         }
 
         public static String getBeerIdFromUri(Uri uri) {

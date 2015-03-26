@@ -42,7 +42,7 @@ public class BeerProvider extends ContentProvider {
     //breweries.breweries_id = ?
     private static final String sBreweriesIdSelection =
             BeerContract.BreweriesEntry.TABLE_NAME +
-                    "." + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID + " = ? ";
+                    "." + BeerContract.BreweriesEntry._ID + " = ? ";
 
     private Cursor getBeerByBreweriesId(Uri uri, String[] projection, String sortOrder) {
         String breweriesId = BeerContract.BeerEntry.getBreweriesIdFromUri(uri);
@@ -52,7 +52,7 @@ public class BeerProvider extends ContentProvider {
         String selection = sBreweriesIdSelection;
 
         return sBeerWithBreweriesIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
+                projection,// new String[]{BeerContract.BreweriesEntry.TABLE_NAME+".*"}
                 selection,
                 selectionArgs,
                 null,
@@ -74,7 +74,7 @@ public class BeerProvider extends ContentProvider {
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, BeerContract.PATH_BEER, BEER);
         matcher.addURI(authority, BeerContract.PATH_BEER + "/#", BEER_FOR_ID);
-        matcher.addURI(authority, BeerContract.PATH_BEER_BREWERIES + "/#", BEER_WITH_BREWERIES);
+        matcher.addURI(authority, BeerContract.PATH_BEER + "/" + BeerContract.PATH_BREWERIES + "/#", BEER_WITH_BREWERIES);
         matcher.addURI(authority, BeerContract.PATH_BREWERIES, BREWERIES);
         return matcher;
     }

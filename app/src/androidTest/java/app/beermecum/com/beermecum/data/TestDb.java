@@ -72,14 +72,14 @@ public class TestDb extends AndroidTestCase {
 
     public void testBeerTable() {
 
-        long BreweriesRowId = insertBreweries();
+        long breweriesRowId = insertBreweries();
 
-        assertFalse("Error: Breweries Not Inserted Correctly", BreweriesRowId == -1L);
+        assertFalse("Error: Breweries Not Inserted Correctly", breweriesRowId == -1L);
 
         BeerDbHelper dbHelper = new BeerDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues BeerValues = TestUtilities.createBeerValues(BreweriesRowId);
+        ContentValues BeerValues = TestUtilities.createBeerValues(breweriesRowId);
 
         long BeerRowId = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, BeerValues);
         assertTrue(BeerRowId != -1);
@@ -113,10 +113,10 @@ public class TestDb extends AndroidTestCase {
 
         ContentValues testValues = TestUtilities.createCruzcampoBreweriesValues();
 
-        long BreweriesRowId;
-        BreweriesRowId = db.insert(BeerContract.BreweriesEntry.TABLE_NAME, null, testValues);
+        long breweriesRowId;
+        breweriesRowId = db.insert(BeerContract.BreweriesEntry.TABLE_NAME, null, testValues);
 
-        assertTrue(BreweriesRowId != -1);
+        assertTrue(breweriesRowId != -1);
 
         Cursor cursor = db.query(
                 BeerContract.BreweriesEntry.TABLE_NAME,  // Table to Query
@@ -137,6 +137,6 @@ public class TestDb extends AndroidTestCase {
 
         cursor.close();
         db.close();
-        return BreweriesRowId;
+        return breweriesRowId;
     }
 }

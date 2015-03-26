@@ -195,11 +195,11 @@ public class TestProvider extends AndroidTestCase {
 
 
     public void testInsertReadProvider() {
-        ContentValues testValues = TestUtilities.createCruzcampoBreweriesValues();
+        ContentValues testBreweriesValues = TestUtilities.createCruzcampoBreweriesValues();
 
         TestUtilities.TestContentObserver tco = TestUtilities.getTestContentObserver();
         mContext.getContentResolver().registerContentObserver(BreweriesEntry.CONTENT_URI, true, tco);
-        Uri breweriesUri = mContext.getContentResolver().insert(BreweriesEntry.CONTENT_URI, testValues);
+        Uri breweriesUri = mContext.getContentResolver().insert(BreweriesEntry.CONTENT_URI, testBreweriesValues);
 
         tco.waitForNotificationOrFail();
         mContext.getContentResolver().unregisterContentObserver(tco);
@@ -217,7 +217,7 @@ public class TestProvider extends AndroidTestCase {
         );
 
         TestUtilities.validateCursor("testInsertReadProvider. Error validating BreweriesEntry.",
-                cursor, testValues);
+                cursor, testBreweriesValues);
 
         ContentValues beerValues = TestUtilities.createBeerValues(breweriesRowId);
         tco = TestUtilities.getTestContentObserver();
@@ -242,19 +242,7 @@ public class TestProvider extends AndroidTestCase {
         TestUtilities.validateCursor("testInsertReadProvider. Error validating BeerEntry insert.",
                 beerCursor, beerValues);
 
-        beerValues.putAll(testValues);
-
-        beerCursor = mContext.getContentResolver().query(
-                BeerEntry.buildBeerBreweries(Integer.toString(TestUtilities.TEST_BREWERIES_ID)),
-                null, // leaving "columns" null just returns all the columns.
-                null, // cols for "where" clause
-                null, // values for "where" clause
-                null  // sort order
-        );
-        TestUtilities.validateCursor("testInsertReadProvider.  Error validating joined Beer and Breweries Data.",
-                beerCursor, beerValues);
-
-        // Get the joined Beer and Breweries data with a start date
+        // Get the joined Beer and Breweries data with id
         beerCursor = mContext.getContentResolver().query(
                 BeerEntry.buildBeerById(Integer.toString(TestUtilities.TEST_BEER_ID)),
                 null, // leaving "columns" null just returns all the columns.
@@ -265,16 +253,21 @@ public class TestProvider extends AndroidTestCase {
         TestUtilities.validateCursor("testInsertReadProvider.  Error validating joined Beer and Breweries Data with start date.",
                 beerCursor, beerValues);
 
-        // Get the joined Beer data for a specific date
+        ContentValues beerBreweriesValues = new ContentValues();
+        beerBreweriesValues.putAll(testBreweriesValues);
+        beerBreweriesValues.putAll(beerValues);
+
         beerCursor = mContext.getContentResolver().query(
-                BeerEntry.buildBeerBreweries(Integer.toString(TestUtilities.TEST_BREWERIES_ID)),
-                null,
-                null,
-                null,
-                null
+                BeerEntry.buildBeerBreweries(Long.toString(breweriesRowId)),
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null  // sort order
         );
-        TestUtilities.validateCursor("testInsertReadProvider.  Error validating joined Beer and Breweries data for a specific date.",
+        TestUtilities.validateCursor("testInsertReadProvider.  Error validating joined Beer and Breweries Data.",
                 beerCursor, beerValues);
+
+
     }
 
     public void testDeleteRecords() {
