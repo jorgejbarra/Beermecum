@@ -17,7 +17,7 @@ import app.beermecum.com.beermecum.data.BeerContract;
  */
 public class BeerAdapter extends CursorAdapter {
 
-    static final int COL_BEER_ROW_ID = 0;
+    public static final int COL_BEER_ROW_ID = 0;
     static final int COL_BEER_ID = 1;
     static final int COL_BEER_NAME = 2;
     static final int COL_BEER_DESCRIPTION = 3;

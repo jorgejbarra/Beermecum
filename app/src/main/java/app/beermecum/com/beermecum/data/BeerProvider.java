@@ -73,7 +73,7 @@ public class BeerProvider extends ContentProvider {
 
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, BeerContract.PATH_BEER, BEER);
-        matcher.addURI(authority, BeerContract.PATH_BEER + "/#", BEER_FOR_ID);
+        matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEER_FOR_ID);
         matcher.addURI(authority, BeerContract.PATH_BEER + "/" + BeerContract.PATH_BREWERIES + "/#", BEER_WITH_BREWERIES);
         matcher.addURI(authority, BeerContract.PATH_BREWERIES, BREWERIES);
         return matcher;
@@ -121,8 +121,7 @@ public class BeerProvider extends ContentProvider {
             // "Beer/*"
             case BEER_FOR_ID: {
                 String beerId = BeerContract.BeerEntry.getBeerIdFromUri(uri);
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        BeerContract.BeerEntry.TABLE_NAME,
+                retCursor = sBeerWithBreweriesIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         sBeerIdSelection,
                         new String[]{beerId},

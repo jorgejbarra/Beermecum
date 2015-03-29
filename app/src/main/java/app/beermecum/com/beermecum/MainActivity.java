@@ -1,14 +1,16 @@
 package app.beermecum.com.beermecum;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import app.beermecum.com.beermecum.data.BeerContract;
@@ -23,7 +25,6 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private BeerAdapter mBeerAdapter;
-    private MyDetailView mydetailview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,33 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         FetchBeerTask weatherTask = new FetchBeerTask(getContentResolver());
         weatherTask.execute();
 
-        mydetailview = (MyDetailView) findViewById(R.id.mydetail_view);
+        final MyDetailView mydetailview = (MyDetailView) findViewById(R.id.mydetail_view);
         if (mydetailview != null) {
             getSupportLoaderManager().initLoader(DETAIL_LOADER, null, mydetailview);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                    if (cursor != null) {
+                        mydetailview.setRowId(cursor.getLong(BeerAdapter.COL_BEER_ID));
+                        getSupportLoaderManager().restartLoader(DETAIL_LOADER, null, mydetailview);
+                    }
+                }
+            });
+        } else {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                    long beerRowId = cursor.getLong(BeerAdapter.COL_BEER_ID);
+                    if (cursor != null) {
+                        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                        intent.putExtra(DetailActivity.EXTRA_BEER_ID, beerRowId);
+                        startActivity(intent);
+                    }
+                }
+            });
         }
     }
 
@@ -83,7 +108,6 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Log.d(LOG_TAG, "Cerbezas: " + cursor.getCount());
         mBeerAdapter.swapCursor(cursor);
     }
 

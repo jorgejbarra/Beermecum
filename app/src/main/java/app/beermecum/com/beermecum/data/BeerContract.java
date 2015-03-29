@@ -74,6 +74,7 @@ public class BeerContract {
         public static final String COLUMN_NAME = "beer_name";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_ABV = "abv";
+        public static final String COLUMN_LIKE = "like";
 
         public static Uri buildBeerUri(long beerId) {
             return ContentUris.withAppendedId(CONTENT_URI, beerId);
