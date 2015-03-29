@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class BeerDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
     static final String DATABASE_NAME = "beermecum.db";
 
     public BeerDbHelper(Context context) {
@@ -22,15 +22,15 @@ public class BeerDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_BREWERIES_TABLE = "CREATE TABLE " + BeerContract.BreweriesEntry.TABLE_NAME + " (" +
                 BeerContract.BreweriesEntry._ID + " INTEGER PRIMARY KEY," +
                 BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID + " INTEGER NOT NULL, " +
-                BeerContract.BreweriesEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
+                BeerContract.BreweriesEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 BeerContract.BreweriesEntry.COLUMN_URL + " TEXT NOT NULL, " +
                 "UNIQUE (" + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID + ") ON CONFLICT REPLACE);";
 
         final String SQL_CREATE_BEER_TABLE = "CREATE TABLE " + BeerContract.BeerEntry.TABLE_NAME + " (" +
                 BeerContract.BeerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 BeerContract.BeerEntry.COLUMN_BEER_ID + " INTEGER NOT NULL, " +
-                BeerContract.BeerEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                BeerContract.BeerEntry.COLUMN_DESCRIPTION + " TEXT UNIQUE NOT NULL, " +
+                BeerContract.BeerEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                BeerContract.BeerEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 BeerContract.BeerEntry.COLUMN_ABV + " REAL NOT NULL, " +
                 BeerContract.BeerEntry.COLUMN_BREWERIES_KEY + " INTEGER NOT NULL, " +
                 " FOREIGN KEY (" + BeerContract.BeerEntry.COLUMN_BREWERIES_KEY + ") REFERENCES " +

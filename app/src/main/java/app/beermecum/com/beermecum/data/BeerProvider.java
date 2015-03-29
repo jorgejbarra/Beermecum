@@ -31,7 +31,7 @@ public class BeerProvider extends ContentProvider {
                         " ON " + BeerContract.BeerEntry.TABLE_NAME +
                         "." + BeerContract.BeerEntry.COLUMN_BREWERIES_KEY +
                         " = " + BeerContract.BreweriesEntry.TABLE_NAME +
-                        "." + BeerContract.BreweriesEntry._ID);
+                        "." + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID);
     }
 
     //beer.beer_id = ?
@@ -134,8 +134,7 @@ public class BeerProvider extends ContentProvider {
             }
             // "Beer"
             case BEER: {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        BeerContract.BeerEntry.TABLE_NAME,
+                retCursor = sBeerWithBreweriesIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         selection,
                         selectionArgs,

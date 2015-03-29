@@ -1,7 +1,7 @@
 package app.beermecum.com.beermecum;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -21,14 +21,14 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
     private static final String BEER_BASE_URL = "http://api.openbeerdatabase.com/v1/beers.json";
 
     private final String LOG_TAG = FetchBeerTask.class.getSimpleName();
-    private final Context mContext;
+    private final ContentResolver mCntentResolver;
 
     private final JsonParser jsonParser = new JsonParser();
     private final HttpConnectionBeerDatabase httpConnectionBeerDatabase = new HttpConnectionBeerDatabase();
 
 
-    public FetchBeerTask(Context context) {
-        mContext = context;
+    public FetchBeerTask(ContentResolver contentResolver) {
+        mCntentResolver = contentResolver;
     }
 
 
@@ -40,7 +40,7 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
             int insertedBreweries = downloadAllBreweries();
             int insertedBeer = downloadAllBeer();
 
-            Log.d(LOG_TAG, "FetchBeerTask Complete. " + insertedBreweries + " Inserted" + insertedBreweries + " Inserted");
+            Log.d(LOG_TAG, "FetchBeerTask Complete." + insertedBreweries + " Breweries Inserted, " + insertedBeer + " Beer Inserted");
         } catch (JSONException | IOException | EmptyResponseException e) {
             Log.e(LOG_TAG, "FetchBeerTask Error", e);
         }
@@ -50,6 +50,7 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
     private int downloadAllBreweries() throws EmptyResponseException, IOException, JSONException {
         int page = 1;
         int inserted = 0;
+        int totalInserted = 0;
         do {
             String breweriesSetting = httpConnectionBeerDatabase.connectToUrlAndObtainResponseString(BREWERIES_BASE_URL, page);
 
@@ -59,16 +60,19 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(BeerContract.BreweriesEntry.CONTENT_URI, cvArray);
+                inserted = mCntentResolver.bulkInsert(BeerContract.BreweriesEntry.CONTENT_URI, cvArray);
+                totalInserted += inserted;
             }
+            page++;
 
         } while (inserted != 0);
-        return inserted;
+        return totalInserted;
     }
 
     private int downloadAllBeer() throws EmptyResponseException, IOException, JSONException {
         int page = 1;
         int inserted = 0;
+        int totalInserted = 0;
         do {
             String beerSetting = httpConnectionBeerDatabase.connectToUrlAndObtainResponseString(BEER_BASE_URL, page);
 
@@ -78,10 +82,11 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(BeerContract.BeerEntry.CONTENT_URI, cvArray);
+                inserted = mCntentResolver.bulkInsert(BeerContract.BeerEntry.CONTENT_URI, cvArray);
+                totalInserted += inserted;
             }
-
+            page++;
         } while (inserted != 0);
-        return inserted;
+        return totalInserted;
     }
 }

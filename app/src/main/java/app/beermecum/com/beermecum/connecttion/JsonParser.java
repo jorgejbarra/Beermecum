@@ -55,10 +55,13 @@ public class JsonParser {
             throws JSONException {
 
         // beer information
+        final String OWM_BEER_ID = "id";
+        final String OWM_BEER_NAME = "name";
+        final String OWM_BEER_DESCRIPTION = "description";
+        final String OWM_BEER_ABV = "abv";
+
         final String OWM_BREWERIES_ID = "id";
-        final String OWM_BREWERIES_NAME = "name";
-        final String OWM_BREWERIES_DESCRIPTION = "description";
-        final String OWM_BREWERIES_ABV = "abv";
+        final String OWM_BREWERIES = "brewery";
 
         final String OWM_LIST = "beers";
 
@@ -72,16 +75,20 @@ public class JsonParser {
 
             JSONObject breweriesJSONObject = beerArray.getJSONObject(i);
 
-            long beerId = breweriesJSONObject.getLong(OWM_BREWERIES_ID);
-            String beerName = breweriesJSONObject.getString(OWM_BREWERIES_NAME);
-            String beerDescription = breweriesJSONObject.getString(OWM_BREWERIES_DESCRIPTION);
-            double beerAbv = breweriesJSONObject.getDouble(OWM_BREWERIES_ABV);
+            long beerId = breweriesJSONObject.getLong(OWM_BEER_ID);
+            String beerName = breweriesJSONObject.getString(OWM_BEER_NAME);
+            String beerDescription = breweriesJSONObject.getString(OWM_BEER_DESCRIPTION);
+            double beerAbv = breweriesJSONObject.getDouble(OWM_BEER_ABV);
+
+            JSONObject brewery = breweriesJSONObject.getJSONObject(OWM_BREWERIES);
+            long breweryId = brewery.getLong(OWM_BREWERIES_ID);
 
             ContentValues weatherValues = new ContentValues();
             weatherValues.put(BeerContract.BeerEntry.COLUMN_BEER_ID, beerId);
             weatherValues.put(BeerContract.BeerEntry.COLUMN_NAME, beerName);
             weatherValues.put(BeerContract.BeerEntry.COLUMN_DESCRIPTION, beerDescription);
             weatherValues.put(BeerContract.BeerEntry.COLUMN_ABV, beerAbv);
+            weatherValues.put(BeerContract.BeerEntry.COLUMN_BREWERIES_KEY, breweryId);
 
             beerVector.add(weatherValues);
         }

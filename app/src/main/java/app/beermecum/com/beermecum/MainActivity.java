@@ -1,17 +1,41 @@
 package app.beermecum.com.beermecum;
 
-import android.support.v7.app.ActionBarActivity;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import app.beermecum.com.beermecum.data.BeerContract;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+
+    private static final int BEER_LOADER = 0;
+
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private BeerAdapter mBeerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportLoaderManager().initLoader(BEER_LOADER, null, this);
+
+
+        mBeerAdapter = new BeerAdapter(this, null, 0);
+        ListView listView = (ListView) findViewById(R.id.listBeer);
+        listView.setAdapter(mBeerAdapter);
+
+        FetchBeerTask weatherTask = new FetchBeerTask(getContentResolver());
+        weatherTask.execute();
     }
 
 
@@ -35,5 +59,29 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        String sortOrder = BeerContract.BeerEntry.COLUMN_NAME + " ASC";
+
+        return new CursorLoader(this,
+                BeerContract.BeerEntry.CONTENT_URI,
+                BeerAdapter.getBeerColumns(),
+                null,
+                null,
+                sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        Log.d(LOG_TAG, "Cerbezas: " + cursor.getCount());
+        mBeerAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mBeerAdapter.swapCursor(null);
     }
 }
