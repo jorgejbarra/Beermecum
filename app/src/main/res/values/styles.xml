@@ -5,7 +5,7 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Beermecum</item>
     </style>
 
-    <style name="ForecastTheme" parent="AppTheme">
+    <style name="BeermecumTheme" parent="AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.Beermecum.NoTitle</item>
     </style>
 

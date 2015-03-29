@@ -6,6 +6,7 @@
     <color name="grey_700">#646464</color>
     <color name="black">#000000</color>
 
-    <color name="beermecum_brown">#ff64c2f4</color>
+    <color name="beermecum_brown">#ff805300</color>
+    <color name="beermecum_light_brown">#fff0dc07</color>
 
 </resources>

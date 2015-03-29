@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.beermecum.com.beermecum.data.BeerContract;
@@ -39,6 +40,20 @@ public class BeerAdapter extends CursorAdapter {
     };
 
 
+    public static class ViewHolder {
+        public final ImageView iconView;
+        public final TextView beerNameView;
+        public final TextView brewerieNameView;
+        public final TextView abvTempView;
+
+        public ViewHolder(View view) {
+            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            beerNameView = (TextView) view.findViewById(R.id.list_item_beer_name);
+            brewerieNameView = (TextView) view.findViewById(R.id.list_item_breweries_name);
+            abvTempView = (TextView) view.findViewById(R.id.list_item_beer_abv);
+        }
+    }
+
     public BeerAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -50,12 +65,29 @@ public class BeerAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_beer, parent, false);
+
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
+
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tv = (TextView) view;
-        tv.setText(cursor.getString(COL_BEER_NAME));
+
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+        // Read date from cursor
+        String beerName = cursor.getString(COL_BEER_NAME);
+        viewHolder.beerNameView.setText(beerName);
+
+        String brewerieName = cursor.getString(COL_BREWERIE_NAME);
+        viewHolder.brewerieNameView.setText(brewerieName);
+        viewHolder.iconView.setContentDescription(brewerieName);
+
+        double beerAbv = cursor.getDouble(COL_BEER_ABV);
+        viewHolder.abvTempView.setText(Double.toString(beerAbv));
     }
+
+
 }
