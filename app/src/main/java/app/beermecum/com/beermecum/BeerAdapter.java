@@ -79,10 +79,12 @@ public class BeerAdapter extends CursorAdapter {
 
         // Read date from cursor
         String beerName = cursor.getString(COL_BEER_NAME);
-        viewHolder.beerNameView.setText(beerName);
+        String beerId = cursor.getString(COL_BEER_ID);
+        viewHolder.beerNameView.setText(beerId + " - " + beerName);
 
         String brewerieName = cursor.getString(COL_BREWERIE_NAME);
-        viewHolder.brewerieNameView.setText(brewerieName);
+        String brewerieId = cursor.getString(COL_BREWERIE_ID);
+        viewHolder.brewerieNameView.setText(brewerieId + " - " + brewerieName);
         viewHolder.iconView.setContentDescription(brewerieName);
 
         double beerAbv = cursor.getDouble(COL_BEER_ABV);

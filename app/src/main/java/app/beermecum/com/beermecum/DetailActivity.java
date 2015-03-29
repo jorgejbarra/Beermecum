@@ -1,17 +1,37 @@
 package app.beermecum.com.beermecum;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import app.beermecum.com.beermecum.data.BeerContract;
 
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String BEER_ID = "beer_id";
+    private TextView mBeerNameTextView;
+
+    private long mBeerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        if (savedInstanceState != null) {
+            mBeerId = savedInstanceState.getLong(DetailActivity.BEER_ID);
+        }
+
+        mBeerNameTextView = (TextView) findViewById(R.id.detail_beer_name);
+
     }
 
 
@@ -24,16 +44,39 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri weatherForLocationUri = BeerContract.BeerEntry.buildBeerUri(mBeerId);
+        return new CursorLoader(
+                this,
+                weatherForLocationUri,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.moveToFirst()) {
+            int beerId = data.getInt(data.getColumnIndex(BeerContract.BeerEntry.COLUMN_BEER_ID));
+            int beerName = data.getInt(data.getColumnIndex(BeerContract.BeerEntry.COLUMN_NAME));
+            mBeerNameTextView.setText(beerId + "" + beerName);
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
     }
 }

@@ -17,17 +17,19 @@ import app.beermecum.com.beermecum.data.BeerContract;
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private static final int BEER_LOADER = 0;
+    private static final int LIST_LOADER = 0;
+    private static final int DETAIL_LOADER = 1;
 
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private BeerAdapter mBeerAdapter;
+    private MyDetailView mydetailview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportLoaderManager().initLoader(BEER_LOADER, null, this);
+        getSupportLoaderManager().initLoader(LIST_LOADER, null, this);
 
 
         mBeerAdapter = new BeerAdapter(this, null, 0);
@@ -36,6 +38,11 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 
         FetchBeerTask weatherTask = new FetchBeerTask(getContentResolver());
         weatherTask.execute();
+
+        mydetailview = (MyDetailView) findViewById(R.id.mydetail_view);
+        if (mydetailview != null) {
+            getSupportLoaderManager().initLoader(DETAIL_LOADER, null, mydetailview);
+        }
     }
 
 
