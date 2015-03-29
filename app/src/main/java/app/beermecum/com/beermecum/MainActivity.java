@@ -86,7 +86,9 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_score) {
+            Intent intent = new Intent(MainActivity.this, ScoreActivity.class);
+            startActivity(intent);
             return true;
         }
 

@@ -2,7 +2,8 @@
     <string name="app_name">Beermecum</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_score">Score</string>
+    <string name="action_share">Share</string>
     <string name="title_activity_detail">DetailActivity</string>
 
 

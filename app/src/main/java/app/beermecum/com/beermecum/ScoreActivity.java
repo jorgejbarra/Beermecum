@@ -1,39 +1,51 @@
 package app.beermecum.com.beermecum;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import app.beermecum.com.beermecum.data.BeerContract;
 
 
 public class ScoreActivity extends ActionBarActivity {
+    private ProgressBar mProgress;
+    private TextView progressDisplay;
+    private TextView pointDisplay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
-    }
 
+        Cursor countCursorBeer = getContentResolver().query(BeerContract.BeerEntry.CONTENT_URI,
+                new String[]{"count(*) AS count"},
+                null,
+                null,
+                null);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_score, menu);
-        return true;
-    }
+        countCursorBeer.moveToFirst();
+        int countcBeer = countCursorBeer.getInt(0);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        Cursor countCursorLike = getContentResolver().query(BeerContract.LikeEntry.CONTENT_URI,
+                new String[]{"count(*) AS count"},
+                null,
+                null,
+                null);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        countCursorLike.moveToFirst();
+        int countLike = countCursorLike.getInt(0);
 
-        return super.onOptionsItemSelected(item);
+        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgress.setMax(countcBeer * 175);
+        mProgress.setProgress(countLike * 175);
+
+        pointDisplay = (TextView) findViewById(R.id.pointDisplay);
+        pointDisplay.setText(String.valueOf("Congratulations, You have drunk " + countcBeer + " different beers"));
+
+        progressDisplay = (TextView) findViewById(R.id.progressDisplay);
+        progressDisplay.setText(String.valueOf(countLike * 175) + " Point!");
     }
 }
