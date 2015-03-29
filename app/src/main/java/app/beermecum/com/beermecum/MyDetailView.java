@@ -40,9 +40,10 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
             BeerContract.BreweriesEntry.TABLE_NAME + "." + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID,
             BeerContract.BreweriesEntry.TABLE_NAME + "." + BeerContract.BreweriesEntry.COLUMN_NAME,
             BeerContract.BreweriesEntry.TABLE_NAME + "." + BeerContract.BreweriesEntry.COLUMN_URL,
-            BeerContract.BeerEntry.COLUMN_LIKE
+            BeerContract.LikeEntry.COLUMN_LIKE
     };
     private long rowId = -1;
+    private long beerId = -1;
     private EnumLike actualState = EnumLike.NOT_YET;
 
     private TextView mBeerNameTextView;
@@ -118,12 +119,12 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
 
     private void changeOpinion(EnumLike opinion) {
         ContentValues likeValue = new ContentValues();
-        likeValue.put(BeerContract.BeerEntry.COLUMN_LIKE, opinion.toInt());
-        getContext().getContentResolver().update(BeerContract.BeerEntry.CONTENT_URI,
-                likeValue,
-                BeerContract.BeerEntry.TABLE_NAME + "." + BeerContract.BeerEntry.COLUMN_BEER_ID + " = ? ",
-                new String[]{Long.toString(rowId)});
 
+        likeValue.put(BeerContract.LikeEntry.COLUMN_BEER_ID, beerId);
+        likeValue.put(BeerContract.LikeEntry.COLUMN_LIKE, opinion.toInt());
+        getContext().getContentResolver().insert(BeerContract.LikeEntry.CONTENT_URI, likeValue);
+
+        actualState = opinion;
         updateButton();
     }
 
@@ -167,7 +168,8 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
 
     public void updateDetails(Cursor data) {
         if (data != null && data.moveToFirst()) {
-            int beerId = data.getInt(COL_BEER_ID);
+
+            beerId = data.getLong(COL_BEER_ID);
 
             String beerName = data.getString(COL_BEER_NAME);
             mBeerNameTextView.setText(beerName);
@@ -188,8 +190,8 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
                 actualState = EnumLike.NOT_YET;
             } else {
                 actualState = EnumLike.fromInt(data.getInt(COL_LIKE));
-                updateButton();
             }
+            updateButton();
         }
     }
 

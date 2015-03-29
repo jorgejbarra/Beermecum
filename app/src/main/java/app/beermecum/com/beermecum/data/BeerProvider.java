@@ -19,6 +19,7 @@ public class BeerProvider extends ContentProvider {
     static final int BEER_FOR_ID = 101;
     static final int BEER_WITH_BREWERIES = 200;
     static final int BREWERIES = 300;
+    static final int LIKES = 400;
 
     private static final SQLiteQueryBuilder sBeerWithBreweriesIdQueryBuilder;
 
@@ -26,12 +27,18 @@ public class BeerProvider extends ContentProvider {
         sBeerWithBreweriesIdQueryBuilder = new SQLiteQueryBuilder();
 
         sBeerWithBreweriesIdQueryBuilder.setTables(
-                BeerContract.BeerEntry.TABLE_NAME + " INNER JOIN " +
+                BeerContract.BeerEntry.TABLE_NAME + " LEFT OUTER JOIN " +
                         BeerContract.BreweriesEntry.TABLE_NAME +
                         " ON " + BeerContract.BeerEntry.TABLE_NAME +
                         "." + BeerContract.BeerEntry.COLUMN_BREWERIES_KEY +
                         " = " + BeerContract.BreweriesEntry.TABLE_NAME +
-                        "." + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID);
+                        "." + BeerContract.BreweriesEntry.COLUMN_BREWERIES_ID
+                        + " LEFT OUTER JOIN " +
+                        BeerContract.LikeEntry.TABLE_NAME +
+                        " ON " + BeerContract.BeerEntry.TABLE_NAME +
+                        "." + BeerContract.BeerEntry.COLUMN_BEER_ID +
+                        " = " + BeerContract.LikeEntry.TABLE_NAME +
+                        "." + BeerContract.LikeEntry.COLUMN_BEER_ID);
     }
 
     //beer.beer_id = ?
@@ -76,6 +83,7 @@ public class BeerProvider extends ContentProvider {
         matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEER_FOR_ID);
         matcher.addURI(authority, BeerContract.PATH_BEER + "/" + BeerContract.PATH_BREWERIES + "/#", BEER_WITH_BREWERIES);
         matcher.addURI(authority, BeerContract.PATH_BREWERIES, BREWERIES);
+        matcher.addURI(authority, BeerContract.PATH_LIKES, LIKES);
         return matcher;
     }
 
@@ -107,6 +115,8 @@ public class BeerProvider extends ContentProvider {
                 return BeerContract.BeerEntry.CONTENT_TYPE;
             case BREWERIES:
                 return BeerContract.BreweriesEntry.CONTENT_TYPE;
+            case LIKES:
+                return BeerContract.LikeEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -156,6 +166,18 @@ public class BeerProvider extends ContentProvider {
                 );
                 break;
             }
+            case LIKES: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        BeerContract.LikeEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             case BEER_WITH_BREWERIES: {
                 retCursor = getBeerByBreweriesId(uri, projection, sortOrder);
                 break;
@@ -186,6 +208,14 @@ public class BeerProvider extends ContentProvider {
                 long _id = db.insert(BeerContract.BreweriesEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = BeerContract.BreweriesEntry.buildBreweriesUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case LIKES: {
+                long _id = db.insert(BeerContract.LikeEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = BeerContract.LikeEntry.buildLikeByBeerId(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -237,6 +267,11 @@ public class BeerProvider extends ContentProvider {
             case BREWERIES:
                 rowsUpdated = db.update(BeerContract.BreweriesEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
+
+            case LIKES: {
+                rowsUpdated = db.update(BeerContract.LikeEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

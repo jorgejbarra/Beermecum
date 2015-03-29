@@ -26,7 +26,10 @@
 
         <activity
             android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"></activity>
+            android:label="@string/title_activity_detail" />
+        <activity
+            android:name=".ScoreActivity"
+            android:label="@string/title_activity_score"></activity>
     </application>
 
 </manifest>

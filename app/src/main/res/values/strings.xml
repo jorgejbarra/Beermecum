@@ -10,4 +10,5 @@
 
 
     <string name="detail_breweries_photo">Breweries Photo</string>
+    <string name="title_activity_score">ScoreActivity</string>
 </resources>

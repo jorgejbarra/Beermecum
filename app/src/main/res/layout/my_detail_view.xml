@@ -106,19 +106,24 @@
                 <Button
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:id="@+id/buttonLike" />
+                    android:id="@+id/buttonLike"
+                    android:background="@android:color/transparent"
+                    style="?android:attr/borderlessButtonStyle" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:visibility="invisible"
-                    android:id="@+id/button3" />
+                    android:id="@+id/button3"
+                    style="?android:attr/borderlessButtonStyle" />
 
                 <Button
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:id="@+id/buttonDislike" />
+                    android:id="@+id/buttonDislike"
+                    android:background="@android:color/transparent"
+                    style="?android:attr/borderlessButtonStyle" />
             </LinearLayout>
 
         </LinearLayout>

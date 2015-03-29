@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class BeerDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     static final String DATABASE_NAME = "beermecum.db";
 
     public BeerDbHelper(Context context) {
@@ -32,14 +32,20 @@ public class BeerDbHelper extends SQLiteOpenHelper {
                 BeerContract.BeerEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 BeerContract.BeerEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 BeerContract.BeerEntry.COLUMN_ABV + " REAL NOT NULL, " +
-                BeerContract.BeerEntry.COLUMN_LIKE + " INTEGER NULL, " +
                 BeerContract.BeerEntry.COLUMN_BREWERIES_KEY + " INTEGER NOT NULL, " +
                 " FOREIGN KEY (" + BeerContract.BeerEntry.COLUMN_BREWERIES_KEY + ") REFERENCES " +
                 BeerContract.BreweriesEntry.TABLE_NAME + " (" + BeerContract.BreweriesEntry._ID + "), " +
                 " UNIQUE (" + BeerContract.BeerEntry.COLUMN_BEER_ID + ") ON CONFLICT REPLACE);";
 
+        final String SQL_CREATE_LIKE_TABLE = "CREATE TABLE " + BeerContract.LikeEntry.TABLE_NAME + " (" +
+                BeerContract.LikeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BeerContract.LikeEntry.COLUMN_BEER_ID + " INTEGER NOT NULL, " +
+                BeerContract.LikeEntry.COLUMN_LIKE + " INTEGER NULL, " +
+                " UNIQUE (" + BeerContract.LikeEntry.COLUMN_BEER_ID + ") ON CONFLICT REPLACE);";
+
         sqLiteDatabase.execSQL(SQL_CREATE_BREWERIES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BEER_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_LIKE_TABLE);
     }
 
     @Override
