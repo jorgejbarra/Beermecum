@@ -43,7 +43,7 @@ public class ScoreActivity extends ActionBarActivity {
         mProgress.setProgress(countLike * 175);
 
         pointDisplay = (TextView) findViewById(R.id.pointDisplay);
-        pointDisplay.setText(String.valueOf("Congratulations, You have drunk " + countcBeer + " different beers"));
+        pointDisplay.setText(String.valueOf("Congratulations, You have drunk " + countLike + " different beers"));
 
         progressDisplay = (TextView) findViewById(R.id.progressDisplay);
         progressDisplay.setText(String.valueOf(countLike * 175) + " Point!");

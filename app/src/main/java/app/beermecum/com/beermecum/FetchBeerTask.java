@@ -89,4 +89,6 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
         } while (inserted != 0);
         return totalInserted;
     }
+
+
 }

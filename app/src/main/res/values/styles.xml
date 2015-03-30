@@ -15,7 +15,7 @@
 
     <style name="ActionBar.Solid.Beermecum.NoTitle" parent="@style/ActionBar.Solid.Beermecum">
         <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/ic_logo</item>
+        <item name="logo">@drawable/ic_logo_beer</item>
     </style>
 
     <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
