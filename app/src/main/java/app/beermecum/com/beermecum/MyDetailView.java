@@ -151,14 +151,14 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
 
     private void updateButton() {
         if (actualState == EnumLike.LIKE) {
-            mButtonLike.setBackgroundResource(R.mipmap.ic_like);
-            mButtonDislike.setBackgroundResource(R.mipmap.ic_dislike_off);
+            mButtonLike.setBackgroundResource(R.drawable.ic_like);
+            mButtonDislike.setBackgroundResource(R.drawable.ic_dislike_off);
         } else if (actualState == EnumLike.DISLIKE) {
-            mButtonLike.setBackgroundResource(R.mipmap.ic_like_off);
-            mButtonDislike.setBackgroundResource(R.mipmap.ic_dislike);
+            mButtonLike.setBackgroundResource(R.drawable.ic_like_off);
+            mButtonDislike.setBackgroundResource(R.drawable.ic_dislike);
         } else {
-            mButtonLike.setBackgroundResource(R.mipmap.ic_like_off);
-            mButtonDislike.setBackgroundResource(R.mipmap.ic_dislike_off);
+            mButtonLike.setBackgroundResource(R.drawable.ic_like_off);
+            mButtonDislike.setBackgroundResource(R.drawable.ic_dislike_off);
         }
     }
 
@@ -183,8 +183,8 @@ public class MyDetailView extends RelativeLayout implements LoaderManager.Loader
             String abvText = data.getString(COL_BEER_ABV);
             mBeerAbvTextView.setText(abvText);
 
-            this.detailBrewerieIcon.setBackgroundResource(R.mipmap.breweries_icon);
-            this.detailBeerIcon.setBackgroundResource(R.mipmap.beer_icon);
+            this.detailBrewerieIcon.setBackgroundResource(R.drawable.breweries_ico);
+            this.detailBeerIcon.setBackgroundResource(R.drawable.beerr_icon);
 
             if (data.isNull(COL_LIKE)) {
                 actualState = EnumLike.NOT_YET;

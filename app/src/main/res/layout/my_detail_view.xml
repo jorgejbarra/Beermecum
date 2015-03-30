@@ -37,10 +37,13 @@
                         <ImageView
                             android:id="@+id/detail_beer_icon"
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_height="80dp"
                             android:contentDescription="@string/detail_beer_photo"
-                            android:padding="10dp"
-                            android:layout_margin="10dp" />
+                            android:layout_margin="10dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="20dp" />
 
                         <TextView
                             android:id="@+id/detail_beer_name"
@@ -59,7 +62,7 @@
 
                         <ImageView
                             android:id="@+id/detail_breweries_icon"
-                            android:layout_width="30dp"
+                            android:layout_width="50dp"
                             android:layout_height="30dp"
                             android:contentDescription="@string/detail_breweries_photo"
                             android:layout_marginRight="10dp"
@@ -89,42 +92,47 @@
             </LinearLayout>
 
             <!-- Humidity, wind, pressure -->
+            <RelativeLayout
+                android:id="@+id/widget29"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buttonLike"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buttonDislike"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/detail_beer_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceLarge" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="fill"
-                android:layout_margin="20dp">
-
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/buttonLike"
-                    android:background="@android:color/transparent"
-                    style="?android:attr/borderlessButtonStyle" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:visibility="invisible"
-                    android:id="@+id/button3"
-                    style="?android:attr/borderlessButtonStyle" />
-
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/buttonDislike"
-                    android:background="@android:color/transparent"
-                    style="?android:attr/borderlessButtonStyle" />
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
