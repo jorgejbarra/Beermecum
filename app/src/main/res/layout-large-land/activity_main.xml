@@ -8,7 +8,8 @@
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:id="@+id/listBeer"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:choiceMode="singleChoice" />
 
     <LinearLayout
         android:orientation="horizontal"
