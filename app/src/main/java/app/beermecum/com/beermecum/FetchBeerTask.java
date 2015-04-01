@@ -49,7 +49,7 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
 
     private int downloadAllBreweries() throws EmptyResponseException, IOException, JSONException {
         int page = 1;
-        int inserted = 0;
+        int inserted;
         int totalInserted = 0;
         do {
             String breweriesSetting = httpConnectionBeerDatabase.connectToUrlAndObtainResponseString(BREWERIES_BASE_URL, page);
@@ -71,7 +71,7 @@ public class FetchBeerTask extends AsyncTask<Void, Void, Void> {
 
     private int downloadAllBeer() throws EmptyResponseException, IOException, JSONException {
         int page = 1;
-        int inserted = 0;
+        int inserted;
         int totalInserted = 0;
         do {
             String beerSetting = httpConnectionBeerDatabase.connectToUrlAndObtainResponseString(BEER_BASE_URL, page);

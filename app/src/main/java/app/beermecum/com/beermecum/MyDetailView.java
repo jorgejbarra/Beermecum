@@ -20,15 +20,11 @@ import app.beermecum.com.beermecum.data.BeerContract;
 public class MyDetailView extends RelativeLayout implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    static final int COL_BEER_ROW_ID = 0;
     static final int COL_BEER_ID = 1;
     static final int COL_BEER_NAME = 2;
     static final int COL_BEER_DESCRIPTION = 3;
     static final int COL_BEER_ABV = 4;
-    static final int COL_BREWERIE_ROW_ID = 5;
-    static final int COL_BREWERIE_ID = 6;
     static final int COL_BREWERIE_NAME = 7;
-    static final int COL_BREWERIE_URL = 8;
     static final int COL_LIKE = 9;
     private static final String[] BEER_COLUMNS = {
             BeerContract.BeerEntry.TABLE_NAME + "." + BeerContract.BeerEntry._ID,

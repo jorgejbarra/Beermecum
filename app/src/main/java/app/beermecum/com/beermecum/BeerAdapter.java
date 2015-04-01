@@ -6,7 +6,6 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.beermecum.com.beermecum.data.BeerContract;
@@ -17,15 +16,10 @@ import app.beermecum.com.beermecum.data.BeerContract;
  */
 public class BeerAdapter extends CursorAdapter {
 
-    public static final int COL_BEER_ROW_ID = 0;
     static final int COL_BEER_ID = 1;
     static final int COL_BEER_NAME = 2;
-    static final int COL_BEER_DESCRIPTION = 3;
     static final int COL_BEER_ABV = 4;
-    static final int COL_BREWERIE_ROW_ID = 5;
-    static final int COL_BREWERIE_ID = 6;
     static final int COL_BREWERIE_NAME = 7;
-    static final int COL_BREWERIE_URL = 8;
 
     private static final String[] BEER_COLUMNS = {
             BeerContract.BeerEntry.TABLE_NAME + "." + BeerContract.BeerEntry._ID,
@@ -41,13 +35,11 @@ public class BeerAdapter extends CursorAdapter {
 
 
     public static class ViewHolder {
-        public final ImageView iconView;
         public final TextView beerNameView;
         public final TextView brewerieNameView;
         public final TextView abvTempView;
 
         public ViewHolder(View view) {
-            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
             beerNameView = (TextView) view.findViewById(R.id.list_item_beer_name);
             brewerieNameView = (TextView) view.findViewById(R.id.list_item_breweries_name);
             abvTempView = (TextView) view.findViewById(R.id.list_item_beer_abv);
@@ -79,13 +71,10 @@ public class BeerAdapter extends CursorAdapter {
 
         // Read date from cursor
         String beerName = cursor.getString(COL_BEER_NAME);
-        String beerId = cursor.getString(COL_BEER_ID);
-        viewHolder.beerNameView.setText(beerId + " - " + beerName);
+        viewHolder.beerNameView.setText(beerName);
 
         String brewerieName = cursor.getString(COL_BREWERIE_NAME);
-        String brewerieId = cursor.getString(COL_BREWERIE_ID);
-        viewHolder.brewerieNameView.setText(brewerieId + " - " + brewerieName);
-        viewHolder.iconView.setContentDescription(brewerieName);
+        viewHolder.brewerieNameView.setText(brewerieName);
 
         double beerAbv = cursor.getDouble(COL_BEER_ABV);
         viewHolder.abvTempView.setText(Double.toString(beerAbv));

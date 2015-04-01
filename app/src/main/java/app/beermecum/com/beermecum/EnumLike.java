@@ -1,8 +1,5 @@
 package app.beermecum.com.beermecum;
 
-/**
- * Created by Mormeguil on 29/03/2015.
- */
 public enum EnumLike {
     NOT_YET(0), LIKE(1), DISLIKE(-1);
 

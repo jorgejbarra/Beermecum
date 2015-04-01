@@ -19,23 +19,23 @@ import app.beermecum.com.beermecum.data.BeerContract;
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private static final int LIST_LOADER = 0;
+    public static final String EXTRA_ACTUAL_POSITION = "actual_position";
+    private static final int BEER_LOADER = 0;
     private static final int DETAIL_LOADER = 1;
-
-
-    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private int mPosition = ListView.INVALID_POSITION;
     private BeerAdapter mBeerAdapter;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportLoaderManager().initLoader(LIST_LOADER, null, this);
+        getSupportLoaderManager().initLoader(BEER_LOADER, null, this);
 
 
         mBeerAdapter = new BeerAdapter(this, null, 0);
-        ListView listView = (ListView) findViewById(R.id.listBeer);
-        listView.setAdapter(mBeerAdapter);
+        mListView = (ListView) findViewById(R.id.listBeer);
+        mListView.setAdapter(mBeerAdapter);
 
         FetchBeerTask weatherTask = new FetchBeerTask(getContentResolver());
         weatherTask.execute();
@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         if (mydetailview != null) {
             getSupportLoaderManager().initLoader(DETAIL_LOADER, null, mydetailview);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
@@ -52,21 +52,28 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                         mydetailview.setRowId(cursor.getLong(BeerAdapter.COL_BEER_ID));
                         getSupportLoaderManager().restartLoader(DETAIL_LOADER, null, mydetailview);
                     }
+
+                    mPosition = position;
                 }
             });
         } else {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                    long beerRowId = cursor.getLong(BeerAdapter.COL_BEER_ID);
                     if (cursor != null) {
+                        long beerRowId = cursor.getLong(BeerAdapter.COL_BEER_ID);
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                         intent.putExtra(DetailActivity.EXTRA_BEER_ID, beerRowId);
                         startActivity(intent);
                     }
+                    mPosition = position;
                 }
             });
+        }
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACTUAL_POSITION)) {
+            mPosition = savedInstanceState.getInt(EXTRA_ACTUAL_POSITION);
         }
     }
 
@@ -111,10 +118,21 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mBeerAdapter.swapCursor(cursor);
+        if (mPosition != ListView.INVALID_POSITION) {
+            mListView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mBeerAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(EXTRA_ACTUAL_POSITION, mPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 }

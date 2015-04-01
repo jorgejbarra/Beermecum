@@ -9,14 +9,13 @@ public class DetailActivity extends ActionBarActivity {
     private static final int DETAIL_LOADER = 1;
     public static final String EXTRA_BEER_ID = "beerRowId";
 
-    private long mBeerId;
+    private long beerRowId = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        long beerRowId;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -37,7 +36,7 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(EXTRA_BEER_ID, mBeerId);
+        outState.putLong(EXTRA_BEER_ID, beerRowId);
         super.onSaveInstanceState(outState);
     }
 

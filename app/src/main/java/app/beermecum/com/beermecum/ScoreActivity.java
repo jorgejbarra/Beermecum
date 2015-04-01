@@ -10,16 +10,31 @@ import app.beermecum.com.beermecum.data.BeerContract;
 
 
 public class ScoreActivity extends ActionBarActivity {
-    private ProgressBar mProgress;
-    private TextView progressDisplay;
-    private TextView pointDisplay;
 
+
+    public static final int POINT_FOR_BEER = 175;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
 
+        int countBeer = getTotalBeer();
+
+        int countLike = getNumOfOpinion();
+
+        ProgressBar mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgress.setMax(countBeer * POINT_FOR_BEER);
+        mProgress.setProgress(countLike * POINT_FOR_BEER);
+
+        TextView pointDisplay = (TextView) findViewById(R.id.pointDisplay);
+        pointDisplay.setText(String.valueOf("Congratulations, You have drunk " + countLike + " different beers"));
+
+        TextView progressDisplay = (TextView) findViewById(R.id.progressDisplay);
+        progressDisplay.setText(String.valueOf(countLike * 175) + " Point!");
+    }
+
+    private int getTotalBeer() {
         Cursor countCursorBeer = getContentResolver().query(BeerContract.BeerEntry.CONTENT_URI,
                 new String[]{"count(*) AS count"},
                 null,
@@ -28,7 +43,11 @@ public class ScoreActivity extends ActionBarActivity {
 
         countCursorBeer.moveToFirst();
         int countcBeer = countCursorBeer.getInt(0);
+        countCursorBeer.close();
+        return countcBeer;
+    }
 
+    private int getNumOfOpinion() {
         Cursor countCursorLike = getContentResolver().query(BeerContract.LikeEntry.CONTENT_URI,
                 new String[]{"count(*) AS count"},
                 null,
@@ -37,15 +56,7 @@ public class ScoreActivity extends ActionBarActivity {
 
         countCursorLike.moveToFirst();
         int countLike = countCursorLike.getInt(0);
-
-        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgress.setMax(countcBeer * 175);
-        mProgress.setProgress(countLike * 175);
-
-        pointDisplay = (TextView) findViewById(R.id.pointDisplay);
-        pointDisplay.setText(String.valueOf("Congratulations, You have drunk " + countLike + " different beers"));
-
-        progressDisplay = (TextView) findViewById(R.id.progressDisplay);
-        progressDisplay.setText(String.valueOf(countLike * 175) + " Point!");
+        countCursorLike.close();
+        return countLike;
     }
 }

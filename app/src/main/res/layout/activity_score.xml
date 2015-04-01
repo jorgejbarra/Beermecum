@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
+
     <ImageView
         android:layout_width="400dp"
         android:layout_height="wrap_content"
@@ -10,7 +11,8 @@
         android:src="@drawable/score_back"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        />
+        android:contentDescription="@string/backgroundimage" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,8 +41,7 @@
                 android:layout_height="15dip"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="5dip"
-                android:layout_marginTop="30dip"
-                android:layout_weight="0.8" />
+                android:layout_marginTop="30dip" />
         </RelativeLayout>
 
         <TextView
@@ -54,7 +55,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:visibility="invisible" />

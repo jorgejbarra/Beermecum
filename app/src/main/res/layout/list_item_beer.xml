@@ -8,23 +8,13 @@
     android:orientation="horizontal"
     android:background="@drawable/touch_selector">
 
-    <FrameLayout
-        android:layout_width="60dp"
-        android:layout_height="fill_parent">
-
-        <ImageView
-            android:id="@+id/list_item_icon"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </FrameLayout>
-
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="7"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingRight="10dp"
+        android:paddingLeft="20dp">
 
         <TextView
             android:id="@+id/list_item_beer_name"
